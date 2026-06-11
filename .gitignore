@@ -15,3 +15,4 @@ wheels/
 
 images/
 pp_scrape/.env
+processed_images/
