@@ -59,7 +59,6 @@ DOWNLOAD_DELAY = 1
 # Configure item pipelines
 # See https://docs.scrapy.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
-    "scrapy.pipelines.images.ImagesPipeline": 1,
     "pp_scrape.pipelines.images": 300
 }
 

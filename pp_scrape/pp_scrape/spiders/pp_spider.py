@@ -5,7 +5,8 @@ import scrapy
 class ProjectileSpider(scrapy.Spider):
     name = "projectiles"
     start_urls = [
-            "https://www.projectilepoints.net/Search/Kansas_Notched.html"
+            "https://www.projectilepoints.net/Points/Merkle.html",
+            "https://www.projectilepoints.net/Points/Osceola.html"
     ]
 
     def parse(self, response):
