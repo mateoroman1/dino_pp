@@ -9,9 +9,11 @@ wheels/
 # Virtual environments
 .venv
 
-.jpg
-.png
-.html
+*.jpg
+*.png
+*.html
+*.csv
+*.npy
 
 images/
 pp_scrape/.env
