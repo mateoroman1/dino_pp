@@ -4,6 +4,7 @@ from transformers import AutoModel
 import torch
 
 from PIL import Image
+import glob, os
 
 import numpy as np
 import pandas as pd
@@ -20,10 +21,17 @@ model.eval()
 
 model.to(device)
 
-image = Image.open("pp_scrape/processed_images/0f2b0df7be_Osceola.png").convert("RGB")
+filenames = []
+images = []
+
+for infile in glob.glob("pp_scrape/processed_images/*.png"):
+    filenames.append(infile)
+    images.append(
+        Image.open(infile).convert("RGB")
+    )
 
 inputs = processor(
-    images=image,
+    images=images,
     return_tensors="pt"
 )
 
@@ -57,20 +65,26 @@ mean_embedding = (
     .squeeze()
 )
 
-cls_embedding /= np.linalg.norm(cls_embedding)
+cls_embedding = cls_embedding / np.linalg.norm(
+    cls_embedding,
+    axis=1,
+    keepdims=True
+)
 
-mean_embedding /= np.linalg.norm(mean_embedding)
+mean_embedding = mean_embedding / np.linalg.norm(
+    mean_embedding,
+    axis=1,
+    keepdims=True
+)
 
-rows = []
+metadata = pd.DataFrame({
+    "filename": filenames
+})
 
-rows.append({"filename": "Osceola",
-             "cls_embedding": True,
-             "mean_embedding": True
-             })
-
-df = pd.DataFrame(rows)
-
-df.to_csv("embeddings/cls_mean_1.csv", index=False)
+metadata.to_csv(
+    "embeddings/metadata.csv",
+    index=False
+)
 
 np.save("embeddings/cls_embedding.npy", cls_embedding)
 np.save("embeddings/mean_embedding.npy", mean_embedding)
